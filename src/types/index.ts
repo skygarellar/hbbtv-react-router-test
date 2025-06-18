@@ -39,7 +39,7 @@ export type NavigatorStore = {
   keydownHandler: (e: KeyboardEvent) => void;
 
   activeContainer: ContainerId | null;
-  setActiveContainer: (id: ContainerId) => void;
+  setActiveContainer: (id: ContainerId, parentId: ContainerId | null) => void;
 
   containers: Record<ContainerId, Container>;
   registerContainer: (container: Container) => void;
