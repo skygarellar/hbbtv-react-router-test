@@ -1,5 +1,7 @@
 import { Keys } from "../types";
 
+export const projectName = "Sky TV Skin";
+
 export const KeyOptions: Record<Keys, (string | number)[]> = {
   [Keys.Up]: ["ArrowUp", 38],
   [Keys.Down]: ["ArrowDown", 40],

@@ -1,9 +1,8 @@
-import { create } from "zustand";
+import { createStore } from "zustand";
 import type { Container, ContainerId, Keys, NavigatorStore } from "../types";
-import { getKey } from "../utils";
-import { useShallow } from "zustand/shallow";
+import { getKey, logger } from "../utils";
 
-const navigatorStore = create<NavigatorStore>((set, get) => ({
+const navigatorStore = createStore<NavigatorStore>((set, get) => ({
   containers: {},
 
   activeContainer: null,
@@ -12,6 +11,7 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
 
   keydownHandler: (e: KeyboardEvent) => {
     const key = getKey(e);
+    logger.debug(`Key pressed: ${key}`);
     if (!key) return;
     const activeId = get().activeContainer;
     if (!activeId) return;
@@ -38,12 +38,12 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
       }
     }
     get().containerStackPush(id);
-    console.log(`Active container set: ${id}`);
-    console.log(`Container stack: ${get().containersStack}`);
+    logger.debug(`Active container set: ${id}`);
+    logger.debug(`Container stack: ${get().containersStack}`);
   },
 
   registerContainer: (container: Container) => {
-    // console.log(`Container registered: ${container.id}`);
+    // logger.debug(`Container registered: ${container.id}`);
     set((state) => ({
       containers: {
         ...state.containers,
@@ -106,21 +106,25 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
 }));
 
 const useNavigator = (containerId: ContainerId) => {
-  const keydownHandler = navigatorStore.getState().keydownHandler;
-  const setActiveContainer = (id: ContainerId) =>
-    navigatorStore.getState().setActiveContainer(id, containerId);
-  const registerContainer = navigatorStore.getState().registerContainer;
-  const unregisterContainer = navigatorStore.getState().unregisterContainer;
-
-  const notify = navigatorStore.getState().notify;
-
-  return {
-    keydownHandler,
-    setActiveContainer,
-    registerContainer,
-    unregisterContainer,
-    notify,
-  };
+  
+    const {
+      keydownHandler,
+      setActiveContainer,
+      registerContainer,
+      unregisterContainer,
+      notify,
+    } = navigatorStore.getState();
+    
+    return {
+      keydownHandler,
+      setActiveContainer: (id: ContainerId) => {
+        setActiveContainer(id, containerId);
+      },
+      registerContainer,
+      unregisterContainer,
+      notify,
+    };
+  
 };
 
 export default useNavigator;

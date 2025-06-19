@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useNavigator from "../hooks/useNavigator";
 import type { ContainerProps } from "../types";
+import { logger } from "../utils";
 
 const Container: React.FC<ContainerProps> = ({
   id,
@@ -13,10 +14,10 @@ const Container: React.FC<ContainerProps> = ({
   useEffect(() => {
     const container = { id, keysRemapping, handler };
     registerContainer(container);
-console.log(`Container registered: ${id}`);
+    logger.debug(`Container registered: ${id}`);
     return () => {
       // TBD: Handle cleanup if necessary
-      console.log(`Container unregistered: ${id}`);
+      logger.debug(`Container unregistered: ${id}`);
       unregisterContainer(id);
     };
     
