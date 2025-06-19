@@ -68,8 +68,8 @@ const navigatorStore = createStore<NavigatorStore>((set, get) => ({
     const containerId = stack.pop();
 
     get().containers[containerId!].handler?.onUnload?.();
-logger.debug(`Container popped from stack: ${containerId}`);
-logger.debug(`Current stack: ${stack}`);
+    logger.debug(`Container popped from stack: ${containerId}`);
+    logger.debug(`Current stack: ${stack}`);
     set({ containersStack: [...stack] });
   },
 
@@ -80,8 +80,8 @@ logger.debug(`Current stack: ${stack}`);
     if (container.handler?.onLoad) {
       container.handler.onLoad();
     }
-    stack.push(id);
-    set({ containersStack: [...stack] });
+    
+    set({ containersStack: [...stack, id] });
   },
 
   addContainer: (container: Container) => {
