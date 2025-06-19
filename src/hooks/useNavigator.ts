@@ -29,17 +29,17 @@ const navigatorStore = createStore<NavigatorStore>((set, get) => ({
   setActiveContainer: (id: ContainerId, parentId: ContainerId | null) => {
     const currentId = get().activeContainer;
     const containers = get().containers;
-
+    
     if (currentId) {
       const currContainer = containers[currentId];
-
       if (currContainer.id !== parentId) {
         get().containerStackPop();
       }
     }
     get().containerStackPush(id);
-    logger.debug(`Active container set: ${id}`);
-    logger.debug(`Container stack: ${get().containersStack}`);
+    set({ activeContainer: id });
+    logger.debug(`Active container set to: ${id}`);
+    logger.debug(`Current stack: ${get().containersStack}`);
   },
 
   registerContainer: (container: Container) => {
@@ -51,6 +51,7 @@ const navigatorStore = createStore<NavigatorStore>((set, get) => ({
       },
     }));
   },
+
   unregisterContainer: (id: ContainerId) => {
     set((state) => {
       const newContainers = { ...state.containers };
@@ -58,15 +59,18 @@ const navigatorStore = createStore<NavigatorStore>((set, get) => ({
       return { containers: newContainers };
     });
   },
+
   containerStackPop: () => {
     const stack = get().containersStack;
     if (stack.length === 0) return;
     const containerId = stack.pop();
 
     get().containers[containerId!].handler?.onUnload?.();
-
+logger.debug(`Container popped from stack: ${containerId}`);
+logger.debug(`Current stack: ${stack}`);
     set({ containersStack: [...stack] });
   },
+
   containerStackPush: (id: ContainerId) => {
     const stack = get().containersStack;
     const container = get().containers[id];

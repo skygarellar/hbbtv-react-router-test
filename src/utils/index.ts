@@ -1,9 +1,9 @@
-import { KeyOptions, projectName } from "../config";
+import { KeyOptions, PROJECT } from "../config";
 
 export const getKey = (e: KeyboardEvent) => {
   const keyPressed = e.key ?? e.keyCode;
   const [keyPressedRemap] = Object.entries(KeyOptions).find(
-    ([key, options]) => {
+    ([_, options]) => {
       return options.includes(keyPressed);
     }
   ) ?? [undefined, undefined];
@@ -15,9 +15,9 @@ const canLog = () =>
   location.search.includes("log");
 
 export const logger = {
-  log: (...msg: any[]) => canLog() && console.log(`[${projectName}]`, ...msg),
-  debug: (...msg: any[]) => canLog() && console.debug(`[${projectName}]`, ...msg),
-  info: (...msg: any[]) => canLog() && console.info(`[${projectName}]`, ...msg),
-  error: (...msg: any[]) => canLog() && console.error(`[${projectName}]`, ...msg),
-  warn: (...msg: any[]) => canLog() && console.warn(`[${projectName}]`, ...msg),
+  log: (...msg: unknown[]) => canLog() && console.log(`[${PROJECT}]`, ...msg),
+  debug: (...msg: unknown[]) => canLog() && console.debug(`[${PROJECT}]`, ...msg),
+  info: (...msg: unknown[]) => canLog() && console.info(`[${PROJECT}]`, ...msg),
+  error: (...msg: unknown[]) => canLog() && console.error(`[${PROJECT}]`, ...msg),
+  warn: (...msg: unknown[]) => canLog() && console.warn(`[${PROJECT}]`, ...msg),
 };

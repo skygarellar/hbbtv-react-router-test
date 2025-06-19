@@ -15,7 +15,12 @@ function App() {
   }, [keydownHandler]);
 
   useEffect(() => {
+    setActiveContainer("app");
     setActiveContainer("rail");
+
+    setTimeout(() => {
+      setActiveContainer("rail2");
+    }, 5000);
   }, [setActiveContainer]);
 
   return (
@@ -26,6 +31,10 @@ function App() {
         <Rail
           id="rail"
           items={[{ id: "item1" }, { id: "item2" }, { id: "item3" }]}
+        />
+        <Rail
+          id="rail2"
+          items={[{ id: "item4" }, { id: "item5" }, { id: "item6" }]}
         />
       </Container>
     </>
