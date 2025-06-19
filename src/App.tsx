@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import "./App.css";
 import useNavigator from "./hooks/useNavigator";
-import Rail from "./components/Rail";
-import Container from "./components/Container";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/home";
+import About from "./pages/about";
+import Layout from "./components/Layout";
 
 function App() {
-  const { keydownHandler, setActiveContainer } = useNavigator("app");
+  const { keydownHandler } = useNavigator("app");
 
   useEffect(() => {
     window.addEventListener("keydown", keydownHandler);
@@ -14,30 +16,13 @@ function App() {
     };
   }, [keydownHandler]);
 
-  useEffect(() => {
-    setActiveContainer("app");
-    setActiveContainer("rail");
-
-    setTimeout(() => {
-      setActiveContainer("rail2");
-    }, 5000);
-  }, [setActiveContainer]);
-
   return (
-    <>
-      <h3>SKY TV SKIN</h3>
-      <Container id="app" keysRemapping={{}} handler={{}}>
-        <a href="/about">About</a>
-        <Rail
-          id="rail"
-          items={[{ id: "item1" }, { id: "item2" }, { id: "item3" }]}
-        />
-        <Rail
-          id="rail2"
-          items={[{ id: "item4" }, { id: "item5" }, { id: "item6" }]}
-        />
-      </Container>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+      </Route>
+    </Routes>
   );
 }
 

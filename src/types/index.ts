@@ -13,6 +13,11 @@ export const Keys = {
 
 export type Keys = keyof typeof Keys;
 
+export type PageProps = {
+  name: string;
+  children: React.ReactNode;
+};
+
 export type ContainerHandler = {
   onLoad?: () => void;
   onUnload?: () => void;
@@ -37,6 +42,9 @@ export type ContainerProps = Container & {
 
 export type NavigatorStore = {
   keydownHandler: (e: KeyboardEvent) => void;
+
+  activePage: string | null;
+  setActivePage: (name: string) => void;
 
   activeContainer: ContainerId | null;
   setActiveContainer: (id: ContainerId, parentId: ContainerId | null) => void;

@@ -6,6 +6,7 @@ const navigatorStore = createStore<NavigatorStore>((set, get) => ({
   containers: {},
 
   activeContainer: null,
+  activePage: null,
 
   containersStack: [],
 
@@ -32,7 +33,8 @@ const navigatorStore = createStore<NavigatorStore>((set, get) => ({
     
     if (currentId) {
       const currContainer = containers[currentId];
-      if (currContainer.id !== parentId) {
+
+      if (currContainer && currContainer.id !== parentId) {
         get().containerStackPop();
       }
     }
@@ -107,12 +109,18 @@ logger.debug(`Current stack: ${stack}`);
       get().keydownHandler(e);
     }
   },
+
+  setActivePage: (name: string) => {
+    logger.debug(`Setting active page: ${name}`);
+    set({ activePage: name, containersStack: [] });
+  }
 }));
 
 const useNavigator = (containerId: ContainerId) => {
   
     const {
       keydownHandler,
+      setActivePage,
       setActiveContainer,
       registerContainer,
       unregisterContainer,
@@ -121,6 +129,7 @@ const useNavigator = (containerId: ContainerId) => {
     
     return {
       keydownHandler,
+      setActivePage,
       setActiveContainer: (id: ContainerId) => {
         setActiveContainer(id, containerId);
       },
