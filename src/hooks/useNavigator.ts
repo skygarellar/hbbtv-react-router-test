@@ -11,11 +11,13 @@ const useNavigator = create<NavigatorStore>((set, get) => ({
   containersStack: [],
 
   keydownHandler: (e: KeyboardEvent) => {
+    console.log("TEST :: keydownHandler: ", e)
     const key = getKey(e);
     if (!key) return;
     const activeId = get().activeContainer;
     if (!activeId) return;
     const container = get().containers[activeId];
+    console.log("TEST :: ", container)
     if (container && container.keysRemapping) {
       const remap = container.keysRemapping[key as Keys];
       if (remap) {
@@ -62,7 +64,7 @@ const useNavigator = create<NavigatorStore>((set, get) => ({
     const containerId = stack.pop();
 
     get().containers[containerId!].handler?.onUnload?.();
-    
+
     set({ containersStack: [...stack] });
   },
   containerStackPush: (id: ContainerId) => {
@@ -96,7 +98,7 @@ const useNavigator = create<NavigatorStore>((set, get) => ({
      */
     get().containerStackPop();
     const stack = get().containersStack;
-    if( stack.length > 0) {
+    if (stack.length > 0) {
       set({ activeContainer: stack[stack.length - 1] });
       get().keydownHandler(e);
     }
