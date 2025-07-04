@@ -59,3 +59,23 @@ export type NavigatorStore = {
 
   notify: (e: KeyboardEvent) => void;
 };
+
+export type NavStore = {
+  keydownHandler: (e: KeyboardEvent) => void;
+
+  activePage: string | null;
+  setActivePage: (name: string) => void;
+
+  activeContainer: ContainerId | null;
+  setActiveContainer: (id: ContainerId, parentId: ContainerId | null | undefined) => void;
+
+  containers: Record<ContainerId, Container>;
+  registerContainer: (container: Container) => void;
+  unregisterContainer: (id: ContainerId) => void;
+
+  containersStack: ContainerId[];
+  containerStackPush: (id: ContainerId) => void;
+  containerStackPop: () => void;
+
+  notify: (e: KeyboardEvent, activeId?: string) => void;
+};

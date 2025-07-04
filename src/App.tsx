@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import "./App.css";
-import useNavigator from "./hooks/useNavigator";
+import useNav from "./hooks/useNav";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import About from "./pages/about";
 import Layout from "./components/Layout";
+import Test from "./pages/test";
 
 function App() {
-  const { keydownHandler } = useNavigator("app");
+  const { keydownHandler } = useNav("app");
 
   useEffect(() => {
     window.addEventListener("keydown", keydownHandler);
@@ -21,6 +22,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
+        <Route path="test" element={<Test />} />
       </Route>
     </Routes>
   );
