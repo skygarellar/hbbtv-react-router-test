@@ -13,9 +13,8 @@ export const Keys = {
 
 export type Keys = keyof typeof Keys;
 
-export type PageProps = {
+export type PageProps = Omit<ContainerProps, "id"> & {
   name: string;
-  children: React.ReactNode;
 };
 
 export type ContainerHandler = {
@@ -31,7 +30,6 @@ export type ContainerId = string;
 
 export type Container = {
   id: ContainerId;
-  parentId?: ContainerId;
   keysRemapping: KeysRemapping;
   handler?: ContainerHandler;
 };

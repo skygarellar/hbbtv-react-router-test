@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useNavigator from "../hooks/useNavigator";
 import Container from "./Container";
 import { Keys } from "../types";
+import { logger } from "../utils";
 
 type RailProps = {
     items: unknown[];
@@ -22,7 +23,9 @@ const Rail: React.FC<RailProps> = ({ items, id }) => {
 
     const [currIndex, setCurrIndex] = useState(0);
     const keysRemapping = {
-        [Keys.Right]: () => {
+        [Keys.Right]: (e: KeyboardEvent) => {
+            logger.debug("Right key pressed on rail", e);
+            // notify(e);
             setCurrIndex(prev => prev + 1);
         },
         [Keys.Left]: (e: KeyboardEvent) => {
