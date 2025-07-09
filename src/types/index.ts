@@ -32,6 +32,7 @@ export type Container = {
   id: ContainerId;
   keysRemapping: KeysRemapping;
   handler?: ContainerHandler;
+  parentId?: ContainerId | null; // Optional parent ID for nested containers
 };
 
 export type ContainerProps = Container & {
@@ -44,16 +45,20 @@ export type NavigatorStore = {
   activePage: string | null;
   setActivePage: (name: string) => void;
 
-  activeContainer: ContainerId | null;
+  activeContainer: Container | null;
   setActiveContainer: (id: ContainerId, parentId: ContainerId | null) => void;
 
-  containers: Record<ContainerId, Container>;
+  containers: Map<ContainerId, Container>;
   registerContainer: (container: Container) => void;
-  unregisterContainer: (id: ContainerId) => void;
+  unregisterContainer: (container: Container) => void;
 
-  containersStack: ContainerId[];
-  containerStackPush: (id: ContainerId) => void;
+  containersStack: Map<ContainerId, Container>;
+  containerStackPush: (container: Container) => void;
   containerStackPop: () => void;
 
   notify: (e: KeyboardEvent) => void;
+};
+
+export type NavigatorHook = Pick<NavigatorStore, "keydownHandler" | "setActivePage" | "registerContainer" | "unregisterContainer" | "notify"> & {
+  setActiveContainer: (id: ContainerId) => void;
 };

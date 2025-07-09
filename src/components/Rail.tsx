@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useNavigator from "../hooks/useNavigator";
-import Container from "./Container";
 import { Keys } from "../types";
 import { logger } from "../utils";
+import ContainerComp from "./Container";
 
 type RailProps = {
     items: unknown[];
@@ -52,9 +52,9 @@ const Rail: React.FC<RailProps> = ({ items, id }) => {
     }
     
     return (
-       <Container id={id} keysRemapping={keysRemapping} handler={handler} >
+       <ContainerComp id={id} keysRemapping={keysRemapping} handler={handler} >
             {items.map((item, idx) => <Card item={item} selected={ idx === currIndex }/>)}
-        </Container>
+        </ContainerComp>
     )
 };
 

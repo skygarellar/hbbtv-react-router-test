@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useNavigator from "../hooks/useNavigator";
 import type { PageProps } from "../types";
 import { logger } from "../utils";
-import Container from "./Container";
+import ContainerComp from "./Container";
 
 const Page: React.FC<PageProps> = ({ name, children, keysRemapping = {}, handler = {} }) => {
 
@@ -23,7 +23,7 @@ const Page: React.FC<PageProps> = ({ name, children, keysRemapping = {}, handler
     }, [name, setActivePage, setActiveContainer]);
     
     return(
-        <Container id={name} keysRemapping={keysRemapping} handler={handler}>{ children }</Container>
+        <ContainerComp id={name} keysRemapping={keysRemapping} handler={handler}>{ children }</ContainerComp>
     )
 };
 
