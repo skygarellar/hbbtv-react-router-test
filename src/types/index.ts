@@ -40,6 +40,7 @@ export type ContainerProps = Container & {
 };
 
 export type NavigatorStore = {
+  keyPress: Keys | null;
   keydownHandler: (e: KeyboardEvent) => void;
 
   activePage: string | null;

@@ -10,6 +10,8 @@ import { getKey, logger } from "../utils";
 import { useState } from "react";
 
 const navigatorStore = create<NavigatorStore>((set, get) => ({
+
+  keyPress: null,
   containers: new Map<ContainerId, Container>(),
 
   activeContainer: null,
@@ -18,14 +20,15 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
   containersStack: new Map<ContainerId, Container>(),
 
   keydownHandler: (e: KeyboardEvent) => {
-    const key = getKey(e);
-    logger.debug(`Key pressed: ${key}`);
-    if (!key) return;
+    const keyPress = getKey(e);
+    if (!keyPress) return;
+    set({ keyPress: keyPress as Keys });
+    logger.debug(`Key pressed: ${keyPress}`);
     const currActiveContainer = get().activeContainer;
     if (!currActiveContainer) return;
     const container = get().containers.get(currActiveContainer.id);
     if (container && container.keysRemapping) {
-      const remap = container.keysRemapping[key as Keys];
+      const remap = container.keysRemapping[keyPress! as Keys];
       if (remap) {
         remap(e);
       } else {
@@ -34,10 +37,11 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     }
   },
 
-  setActiveContainer: (cId: ContainerId) => {
+  setActiveContainer: (cId: ContainerId, parentId: ContainerId | null) => {
     const stack = get().containersStack;
     const currActiveContainer = get().activeContainer;
     const newActiveContainer = get().containers.get(cId)!;
+    newActiveContainer.parentId = parentId;
     
     if(currActiveContainer) {
     
@@ -115,16 +119,25 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
 
   notify: (e: KeyboardEvent) => {
     
-    // get().containerStackPop();
     const stack = get().containersStack;
+    const keyPress = get().keyPress!;
 
-    // [a, b, c, d] 
+    /**
+     * ipotesi di stack: [a, b, c, d]
+     * - l'activeContainer è "d" che è quello che ha usato la notify
+     * - prendo lo stack e lo inverto per avere l'ultimo elemento in cima [d, c, b, a]
+     * - elimino il primo elemento che è l'activeContainer => [c, b, a]
+     * - cerco l'id del primo elemento che ha un remapping per il tasto
+     * - se lo trovo, chiamo il remapping
+     * - se non lo trovo, non faccio nulla
+     */
+    // 
     const ids = Array.from(stack.keys()).reverse().slice(1);
     const id =  ids.find((id) => {
-      return stack.get(id)?.keysRemapping?.[getKey(e) as Keys];
+      return stack.get(id)?.keysRemapping?.[keyPress];
     });
     if (id) {
-      stack.get(id)?.keysRemapping?.[getKey(e) as Keys]?.(e);
+      stack.get(id)?.keysRemapping?.[keyPress]?.(e);
     }
     return;
   },
@@ -133,7 +146,11 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     logger.debug(`Setting active page: ${name}`);
     set({ activePage: name, containersStack: new Map<ContainerId, Container>() });
   },
+
 }));
+
+
+
 
 const useNavigator = (containerId: ContainerId): NavigatorHook => {
   const [state] = useState<NavigatorHook>({
