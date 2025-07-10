@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useNavigator from "../hooks/useNavigator";
-import type { Container, Container as ContainerComp, ContainerProps } from "../types";
+import type { Container, ContainerProps } from "../types";
 import { logger } from "../utils";
 
 const ContainerComp: React.FC<ContainerProps> = ({
