@@ -42,48 +42,50 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     const currActiveContainer = get().activeContainer;
     const newActiveContainer = get().containers.get(cId)!;
     newActiveContainer.parentId = parentId;
-    
-    if(currActiveContainer) {
-    
-        if(currActiveContainer.parentId === newActiveContainer!.parentId) {
-            //Subling containers => replace
-            get().containerStackPop();
-            get().containerStackPush(newActiveContainer!);
+
+    if (currActiveContainer) {
+
+      if (currActiveContainer.parentId === newActiveContainer!.parentId) {
+        //Subling containers => replace
+        get().containerStackPop();
+        get().containerStackPush(newActiveContainer!);
+      }
+      else {
+        // father
+        if (currActiveContainer.id === newActiveContainer!.parentId) {
+          // curr active container is my parent
+          get().containerStackPush(newActiveContainer!);
         }
         else {
-            // father
-            if(currActiveContainer.id === newActiveContainer!.parentId) {
-                // curr active container is my parent
-                get().containerStackPush(newActiveContainer!);
-            }
-            else {
-            
-                // da rivedere
-                const parentId = newActiveContainer!.parentId!;
-                const stackContainerIds = Array.from(stack.keys());
-                
-                // a => containerA
-                // [a, b, c, d]
-                // [a, b]
-                // [a, b, f]
-                
-                const newStackContainerIds = stackContainerIds.slice(0, stackContainerIds.indexOf(parentId) + 1);
-                const containers = get().containers;
-                const newStack = newStackContainerIds.reduce((acc, id) => {
-                    acc.set(id, containers.get(id));
-                    return acc;
-                }, new Map());
-                set({ containersStack: newStack});
-                get().containerStackPush(newActiveContainer);
-            }
+
+          // da rivedere
+          const parentId = newActiveContainer!.parentId!;
+          const stackContainerIds = Array.from(stack.keys());
+
+          // a => containerA
+          // [a, b, c, d]
+          // [a, b]
+          // [a, b, f]
+
+          const newStackContainerIds = stackContainerIds.slice(0, stackContainerIds.indexOf(parentId) + 1);
+          const containers = get().containers;
+          const newStack = newStackContainerIds.reduce((acc, id) => {
+            acc.set(id, containers.get(id));
+            return acc;
+          }, new Map());
+          set({ containersStack: newStack });
+          get().containerStackPush(newActiveContainer);
         }
+      }
     }
     else {
-        // che famo?
-        get().containerStackPush(newActiveContainer);
+      // che famo?
+      get().containerStackPush(newActiveContainer);
     }
 
-},
+    set({ activeContainer: newActiveContainer })
+
+  },
 
   registerContainer: (container: Container) => {
     const containers = get().containers;
@@ -118,7 +120,7 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
   },
 
   notify: (e: KeyboardEvent) => {
-    
+
     const stack = get().containersStack;
     const keyPress = get().keyPress!;
 
@@ -133,7 +135,7 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
      */
     // 
     const ids = Array.from(stack.keys()).reverse().slice(1);
-    const id =  ids.find((id) => {
+    const id = ids.find((id) => {
       return stack.get(id)?.keysRemapping?.[keyPress];
     });
     if (id) {
