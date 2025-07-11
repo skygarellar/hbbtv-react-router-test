@@ -20,8 +20,10 @@ const ContainerComp: React.FC<ContainerProps> = ({
       logger.debug(`Container unregistered: ${id}`);
       unregisterContainer(container);
     };
+
     
   }, [keysRemapping, handler, id, registerContainer, unregisterContainer]);
+  console.log("xxx children lenght", children?.props?.children.length);
 
   return <>{children}</>;
 };

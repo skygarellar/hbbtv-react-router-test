@@ -37,6 +37,10 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     }
   },
 
+  getActiveContainer: () => {
+    return get().activeContainer;
+  },
+
   setActiveContainer: (cId: ContainerId, parentId: ContainerId | null) => {
     const stack = get().containersStack;
     const currActiveContainer = get().activeContainer;
@@ -44,6 +48,7 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     newActiveContainer.parentId = parentId;
 
     if (currActiveContainer) {
+      console.log("xxx currActiveContainer", currActiveContainer);
 
       if (currActiveContainer.parentId === newActiveContainer!.parentId) {
         //Subling containers => replace
@@ -83,7 +88,9 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
       get().containerStackPush(newActiveContainer);
     }
 
+    console.log("xxx setActiveContainer", cId, parentId, newActiveContainer);
     set({ activeContainer: newActiveContainer })
+    console.log("xxx activeContainer", get().activeContainer);
 
   },
 
@@ -121,6 +128,8 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
 
   notify: (e: KeyboardEvent) => {
 
+    console.log("xxx notify", e);
+
     const stack = get().containersStack;
     const keyPress = get().keyPress!;
 
@@ -138,6 +147,7 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     const id = ids.find((id) => {
       return stack.get(id)?.keysRemapping?.[keyPress];
     });
+    debugger
     if (id) {
       stack.get(id)?.keysRemapping?.[keyPress]?.(e);
     }
@@ -156,6 +166,7 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
 
 const useNavigator = (containerId: ContainerId): NavigatorHook => {
   const [state] = useState<NavigatorHook>({
+    getActiveContainer: navigatorStore.getState().getActiveContainer,
     keydownHandler: navigatorStore.getState().keydownHandler,
     setActivePage: navigatorStore.getState().setActivePage,
     setActiveContainer: (id: ContainerId) => {

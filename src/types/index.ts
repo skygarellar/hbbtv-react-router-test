@@ -47,6 +47,7 @@ export type NavigatorStore = {
   setActivePage: (name: string) => void;
 
   activeContainer: Container | null;
+  getActiveContainer: () => Container | null;
   setActiveContainer: (id: ContainerId, parentId: ContainerId | null) => void;
 
   containers: Map<ContainerId, Container>;
@@ -60,6 +61,6 @@ export type NavigatorStore = {
   notify: (e: KeyboardEvent) => void;
 };
 
-export type NavigatorHook = Pick<NavigatorStore, "keydownHandler" | "setActivePage" | "registerContainer" | "unregisterContainer" | "notify"> & {
+export type NavigatorHook = Pick<NavigatorStore, "keydownHandler" | "setActivePage" | "registerContainer" | "unregisterContainer" | "notify" | "getActiveContainer"> & {
   setActiveContainer: (id: ContainerId) => void;
 };
