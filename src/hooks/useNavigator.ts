@@ -41,6 +41,9 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     const stack = get().containersStack;
     const currActiveContainer = get().activeContainer;
     const newActiveContainer = get().containers.get(cId)!;
+
+    if (!newActiveContainer) return
+
     newActiveContainer.parentId = parentId;
 
     if (currActiveContainer) {

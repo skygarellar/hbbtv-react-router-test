@@ -1,0 +1,33 @@
+main {
+    width: 1280px;
+    height: 720px;
+}
+
+.container-vertical-1 {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.top-left-side-container {
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: aquamarine;
+}
+
+.top-right-side-container {
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.left-list {
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,342 @@
+/* 
+ * CSS HbbTV Compatible - Solo CSS2.1
+ * Evita: flexbox, grid, transform, transition, border-radius, box-shadow
+ * Usa: float, position, background-color, border
+ */
+
+/* Reset base */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+/* Layout principale */
+body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+    padding: 40px;
+}
+
+/* Container principale */
+.cart-container {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Titolo principale */
+h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* Lista carrelli - container con overflow */
+.cart-list {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+/* Singolo carrello */
+.cart-item {
+    display: inline-block;
+    vertical-align: top;
+    width: 280px;
+    height: 380px;
+    background-color: #2d3748;
+    border: 2px solid #2d3748;
+    padding: 20px;
+    margin-right: 20px;
+    position: relative;
+    white-space: normal;
+}
+
+/* Carrello in focus */
+.cart-item.focused {
+    border-color: #4299e1;
+    background-color: #1a365d;
+}
+
+/* Header del carrello */
+.cart-header {
+    height: 40px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* Titolo carrello */
+.cart-title {
+    float: left;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #4299e1;
+    max-width: 180px;
+}
+
+/* Contatore elementi */
+.cart-count {
+    float: right;
+    background-color: #4299e1;
+    color: #ffffff;
+    padding: 4px 12px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: center;
+    min-width: 20px;
+}
+
+/* Container items del carrello */
+.cart-items {
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #1a202c;
+    padding: 5px;
+}
+
+/* Singolo item nel carrello */
+.item {
+    height: 30px;
+    padding: 8px 0;
+    border-bottom: 1px solid #1a202c;
+    position: relative;
+}
+
+/* Rimuovi border dall'ultimo item */
+.item.last {
+    border-bottom: none;
+}
+
+/* Nome item */
+.item-name {
+    float: left;
+    font-size: 0.9em;
+    color: #e2e8f0;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Prezzo item */
+.item-price {
+    float: right;
+    font-size: 0.9em;
+    color: #4299e1;
+    font-weight: bold;
+}
+
+/* Totale carrello */
+.cart-total {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    height: 30px;
+    padding-top: 15px;
+    border-top: 2px solid #4299e1;
+}
+
+/* Label totale */
+.total-label {
+    float: left;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Importo totale */
+.total-amount {
+    float: right;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #48bb78;
+}
+
+/* Istruzioni navigazione */
+.nav-instructions {
+    margin-top: 30px;
+    text-align: center;
+    color: #a0aec0;
+    font-size: 1em;
+}
+
+/* Clearfix per gestire i float */
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Stati di focus per la navigazione */
+.cart-item:focus {
+    border-color: #4299e1;
+    background-color: #1a365d;
+}
+
+/* Scrollbar personalizzata per IE */
+.cart-items {
+    scrollbar-face-color: #2d3748;
+    scrollbar-track-color: #1a202c;
+    scrollbar-arrow-color: #4299e1;
+    scrollbar-shadow-color: #1a202c;
+}
+
+/* Layout responsive per diverse risoluzioni TV */
+@media screen and (max-width: 1920px) {
+    .cart-container {
+        width: 95%;
+        max-width: 1200px;
+    }
+
+    .cart-item {
+        width: 260px;
+        height: 360px;
+    }
+}
+
+@media screen and (max-width: 1366px) {
+    .cart-container {
+        width: 95%;
+        max-width: 1000px;
+    }
+
+    .cart-item {
+        width: 240px;
+        height: 340px;
+    }
+
+    .cart-items {
+        height: 180px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    body {
+        padding: 20px;
+    }
+
+    .cart-container {
+        width: 95%;
+        max-width: 800px;
+    }
+
+    .cart-item {
+        width: 220px;
+        height: 320px;
+        padding: 15px;
+    }
+
+    .cart-items {
+        height: 160px;
+    }
+
+    .cart-title {
+        font-size: 1.2em;
+        max-width: 140px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+}
+
+/* Utility classes */
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+/* Colori per stati diversi */
+.cart-item.loading {
+    background-color: #2a2a2a;
+    border-color: #666666;
+}
+
+.cart-item.error {
+    background-color: #4a1a1a;
+    border-color: #cc0000;
+}
+
+.cart-item.empty {
+    background-color: #2d2d2d;
+    border-color: #666666;
+}
+
+/* Stili per carrello vuoto */
+.cart-empty {
+    text-align: center;
+    color: #a0aec0;
+    font-style: italic;
+    padding: 40px 20px;
+}
+
+/* Indicatore di caricamento */
+.loading-indicator {
+    text-align: center;
+    color: #4299e1;
+    padding: 20px;
+}
+
+/* Messaggio di errore */
+.error-message {
+    text-align: center;
+    color: #cc0000;
+    padding: 20px;
+    background-color: #4a1a1a;
+    border: 1px solid #cc0000;
+    margin: 10px 0;
+}
+
+/* Focus ring per accessibilità */
+.cart-item:focus,
+.cart-item.focused {
+    outline: 3px solid #4299e1;
+    outline-offset: 2px;
+}
