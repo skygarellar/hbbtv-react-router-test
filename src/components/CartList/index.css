@@ -5,7 +5,7 @@
  */
 
 /* Reset base */
-* {
+/* * {
     margin: 0;
     padding: 0;
     border: 0;
@@ -13,17 +13,17 @@
     font-size: 100%;
     vertical-align: baseline;
     background: transparent;
-}
+} */
 
 /* Layout principale */
-body {
+/* body {
     background-color: #1a1a1a;
     color: #ffffff;
     font-family: Arial, sans-serif;
     font-size: 16px;
     line-height: 1.4;
     padding: 40px;
-}
+} */
 
 /* Container principale */
 .cart-container {

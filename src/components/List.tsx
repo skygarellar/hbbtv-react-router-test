@@ -26,7 +26,7 @@ const List: React.FC<ListProps> = ({ items, id, className = "list", type = "hori
     const [currIndex, setCurrIndex] = useState(0);
     const keysRemapping = {
         [Keys.Right]: (e: KeyboardEvent) => {
-            logger.debug("Right key pressed on list", e);
+            logger.debug("TEST : LIST : Right key pressed on list", e);
             // notify(e);
             setCurrIndex(prev => prev + 1);
         },

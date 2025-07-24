@@ -11,49 +11,45 @@ import "./example.css"
 const Example = () => {
     const { setActiveContainer } = useNavigator("example");
 
+    const leftComponent = [
+        <List key="A" id="boxtop11" type="horizontal" items={[{ id: "A1" }, { id: "A2" }, { id: "A3" }, { id: "A4" }]} />,
+        <List key="B" id="boxtop12" type="horizontal" items={[{ id: "B1" }, { id: "B2" }, { id: "B3" }, { id: "B4" }]} />
+    ]
 
-    const leftComponent =
-        <div className="top-left-side-container">
-            <List key="left-list1" id="left-list1" type="horizontal" items={[{ id: "leftList1Item1" }, { id: "leftList1Item2" }, { id: "leftList1Item3" }, { id: "leftList1Item4" }]} />,
-            <List key="left-list2" id="left-list2" type="horizontal" items={[{ id: "leftList2Item1" }, { id: "leftList2Item2" }, { id: "leftList2Item3" }, { id: "leftList2Item4" }]} />
-        </div>
+    const rightComponent = [<List key="C" id="C" type="vertical" items={[{ id: "C1" }, { id: "C2" }, { id: "C3" }, { id: "C4" }]} />]
 
-    const rightComponent =
-        <div className="top-right-side-container">
-            <List id="left-list1" type="vertical" items={[{ id: "leftList1Item1" }, { id: "leftList1Item2" }, { id: "leftList1Item3" }, { id: "leftList1Item4" }]} />,
-        </div>
+    const leftBox = [<Box key="A" id="A" components={leftComponent} className="top-left-side-container" />]
 
-    const box1 =
-        <div className="container-vertical-1">
-            {leftComponent}
-            {rightComponent}
-        </div>
+    const rightBox = [<Box key="B" id="B" components={rightComponent} className="top-right-side-container" />]
 
-    const box2 =
-        <div className="container-vertical-2">
-            <List id="list1" className="list" items={[{ id: "list1Item1" }, { id: "list1Item2" }, { id: "list1Item3" }, { id: "list1Item4" }]} />
-            <List id="list2" className="list" items={[{ id: "list2Item1" }, { id: "list2Item2" }, { id: "list2Item3" }, { id: "list2Item4" }]} />
-            <List id="list3" className="list" items={[{ id: "list3Item1" }, { id: "list3Item2" }, { id: "list3Item3" }, { id: "list3Item4" }]} />
-        </div>
+    const leftRight = [leftBox, rightBox]
+
+    const box1 = [<Box className="container-vertical-1" id="boxtop1" key="AA" components={leftRight} />]
+
+    const box2 = [
+        <List id="boxbottom0" className="list" items={[{ id: "D1" }, { id: "D2" }, { id: "D3" }, { id: "D4" }]} />,
+        <List id="boxbottom1" className="list" items={[{ id: "E1" }, { id: "E2" }, { id: "E3" }, { id: "E4" }]} />,
+        <List id="boxbottom2" className="list" items={[{ id: "F1" }, { id: "F2" }, { id: "F3" }, { id: "F4" }]} />,
+    ]
 
     const boxes = [
-        { id: "box1", component: box1, },
-        { id: "box2", component: box2, },
+        { id: "boxtop", components: box1, },
+        { id: "boxbottom", components: box2 },
     ]
 
     useEffect(() => {
-        setActiveContainer("exampleleftcontainer");
+        setActiveContainer("boxbottom");
     }, [setActiveContainer]);
 
     const keysRemapping = {
         [Keys.Right]: (e: KeyboardEvent) => {
-            logger.debug("Right key pressed on example", e);
+            console.log("TEST example right ")
         }
     };
 
     return (
         <Page name="example" keysRemapping={keysRemapping} handler={{}}>
-            {boxes.map(box => <Box key={box.id} id={box.id} component={box.component} />)}
+            {boxes.map(box => <Box key={box.id} id={box.id} components={box.components} />)}
         </Page>
         // <CartList />
     );
