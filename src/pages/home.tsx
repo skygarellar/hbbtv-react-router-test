@@ -20,6 +20,7 @@ const Home = () => {
     [Keys.Up]: (e: KeyboardEvent) => {
       console.log("xxx Up key pressed on home", e);
       // logger.log("xxx Right key pressed on home", e);
+      setActiveContainer("homerail");
     },
     [Keys.Down]: (e: KeyboardEvent) => {
       console.log("xxx Down key pressed on home", e);
@@ -35,6 +36,7 @@ const Home = () => {
       <Rail
         id="homerail"
         items={[{ id: "item1" }, { id: "item2" }, { id: "item3" }]}
+        
       />
       <Rail
         id="homerail2"

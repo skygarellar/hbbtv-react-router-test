@@ -9,7 +9,11 @@ const ContainerComp: React.FC<ContainerProps> = ({
   handler,
   children,
 }) => {
-  const { registerContainer, unregisterContainer } = useNavigator(id);
+  const { getActiveContainer, registerContainer, unregisterContainer } = useNavigator(id);
+
+  const activeContainer = getActiveContainer();
+
+  console.log("xxx active container in ContainerComp:", activeContainer?.id);
 
   useEffect(() => {
     const container: Container = { id, keysRemapping, handler };
@@ -23,9 +27,11 @@ const ContainerComp: React.FC<ContainerProps> = ({
 
     
   }, [keysRemapping, handler, id, registerContainer, unregisterContainer]);
-  console.log("xxx children lenght", children?.props?.children.length);
+  console.log("xxx active container in", id);
 
-  return <>{children}</>;
+  return <div style={activeContainer?.id === id ?{
+    border: "2px solid #ccc",
+  } : {border: "none"}}>{children}</div>;
 };
 
 export default ContainerComp;

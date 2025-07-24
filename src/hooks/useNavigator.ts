@@ -46,11 +46,12 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     const currActiveContainer = get().activeContainer;
     const newActiveContainer = get().containers.get(cId)!;
     newActiveContainer.parentId = parentId;
+    const activePage = get().activePage
 
     if (currActiveContainer) {
       console.log("xxx currActiveContainer", currActiveContainer);
 
-      if (currActiveContainer.parentId === newActiveContainer!.parentId) {
+      if (currActiveContainer.parentId === newActiveContainer!.parentId && activePage !== parentId) {
         //Subling containers => replace
         get().containerStackPop();
         get().containerStackPush(newActiveContainer!);
@@ -147,7 +148,6 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     const id = ids.find((id) => {
       return stack.get(id)?.keysRemapping?.[keyPress];
     });
-    debugger
     if (id) {
       stack.get(id)?.keysRemapping?.[keyPress]?.(e);
     }
