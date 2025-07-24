@@ -9,7 +9,7 @@ import type {
 import { getKey, logger } from "../utils";
 import { useState } from "react";
 
-const navigatorStore = create<NavigatorStore>((set, get) => ({
+export const navigatorStore = create<NavigatorStore>((set, get) => ({
 
   keyPress: null,
   containers: new Map<ContainerId, Container>(),
@@ -47,6 +47,7 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     newActiveContainer.parentId = parentId;
 
     if (currActiveContainer) {
+      console.log("PROVA: ", currActiveContainer, newActiveContainer)
 
       if (currActiveContainer.parentId === newActiveContainer!.parentId) {
         //Subling containers => replace
@@ -124,6 +125,8 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
 
   notify: (e: KeyboardEvent) => {
 
+    // get().containerStackPop()
+    console.log("TEST NOTIFY :::::::::", get().activeContainer)
     const stack = get().containersStack;
     const keyPress = get().keyPress!;
 
@@ -141,6 +144,7 @@ const navigatorStore = create<NavigatorStore>((set, get) => ({
     const id = ids.find((id) => {
       return stack.get(id)?.keysRemapping?.[keyPress];
     });
+    console.log("TEST ID ::::::: ", id)
     if (id) {
       stack.get(id)?.keysRemapping?.[keyPress]?.(e);
     }
@@ -162,7 +166,7 @@ const useNavigator = (containerId: ContainerId): NavigatorHook => {
     keydownHandler: navigatorStore.getState().keydownHandler,
     setActivePage: navigatorStore.getState().setActivePage,
     setActiveContainer: (id: ContainerId) => {
-      navigatorStore.getState().setActiveContainer(id, containerId);
+      navigatorStore.getState().setActiveContainer(id, id === containerId ? null : containerId);
     },
     registerContainer: navigatorStore.getState().registerContainer,
     unregisterContainer: navigatorStore.getState().unregisterContainer,

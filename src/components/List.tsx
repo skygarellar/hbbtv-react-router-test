@@ -24,11 +24,16 @@ const List: React.FC<ListProps> = ({ items, id, className = "list", type = "hori
     const { notify } = useNavigator(id);
 
     const [currIndex, setCurrIndex] = useState(0);
-    const keysRemapping = {
+
+
+    const keysRemappingH = {
         [Keys.Right]: (e: KeyboardEvent) => {
             logger.debug("TEST : LIST : Right key pressed on list", e);
             // notify(e);
-            setCurrIndex(prev => prev + 1);
+            if (currIndex < items.length - 1)
+                setCurrIndex(prev => prev + 1);
+            else notify(e)
+
         },
         [Keys.Left]: (e: KeyboardEvent) => {
             if (currIndex === 0) {
@@ -37,6 +42,32 @@ const List: React.FC<ListProps> = ({ items, id, className = "list", type = "hori
             else {
                 setCurrIndex(prev => prev - 1);
             }
+        },
+    };
+
+    const keysRemappingV = {
+        [Keys.Down]: (e: KeyboardEvent) => {
+            logger.debug("TEST : LIST : DOWN key pressed on list", e);
+            // notify(e);
+            if (currIndex < items.length - 1)
+                setCurrIndex(prev => prev + 1);
+            else notify(e)
+
+        },
+        [Keys.Up]: (e: KeyboardEvent) => {
+            if (currIndex === 0) {
+                notify(e);
+            }
+            else {
+                setCurrIndex(prev => prev - 1);
+            }
+        },
+        [Keys.Right]: (e: KeyboardEvent) => {
+            notify(e)
+
+        },
+        [Keys.Left]: (e: KeyboardEvent) => {
+            notify(e)
         },
     };
 
@@ -68,7 +99,7 @@ const List: React.FC<ListProps> = ({ items, id, className = "list", type = "hori
     }
 
     return (
-        <ContainerComp id={id} keysRemapping={keysRemapping} handler={handler} >
+        <ContainerComp id={id} keysRemapping={type === "horizontal" ? keysRemappingH : keysRemappingV} handler={handler} >
             <div className={className} style={type === "horizontal" ? {
                 display: "flex",
                 flexDirection: "row",

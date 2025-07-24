@@ -26,19 +26,13 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
     const keysRemapping = {
         [Keys.Right]: (e: KeyboardEvent) => {
             console.log("TEST BOX REF RIGHT :", currIndexRef.current)
-            logger.debug("Right key pressed on box", id, e);
+            logger.debug("TEST Right key pressed on box", id, e, components);
             // notify(e);
-            // setCurrIndex(prev => prev + 1);
-            // setActiveContainer(id)
+            actionRight(e)
         },
         [Keys.Left]: (e: KeyboardEvent) => {
             console.log("TEST BOX REF LEFT :", currIndexRef.current)
-            // if (currIndex === 0) {
-            //     notify(e);
-            // }
-            // else {
-            //     setCurrIndex(prev => prev - 1);
-            // }
+            actionLeft(e)
         },
         [Keys.Down]: (e: KeyboardEvent) => {
             actionDOWN(e)
@@ -71,6 +65,28 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
         }
     }, [currIndex])
 
+    const actionRight = useCallback((e?: KeyboardEvent) => {
+        console.log("TEST BOX CURRINDEX ON RIGHT: ", currIndexRef.current, currIndex, id + (currIndexRef.current + 1), components.length - 1)
+        if (currIndexRef.current < components.length - 1) {
+            setCurrIndex(prev => prev + 1);
+            setActiveContainer("boxtop1")
+        }
+        else {
+            notify(e);
+        }
+    }, [currIndex])
+
+    const actionLeft = useCallback((e?: KeyboardEvent) => {
+        console.log("TEST BOX CURRINDEX ON LEFT: ", currIndexRef.current, currIndex, id + (currIndexRef.current + 1), components.length - 1)
+        if (currIndexRef.current < components.length - 1) {
+            setCurrIndex(prev => prev + 1);
+            setActiveContainer("boxtop0")
+        }
+        else {
+            notify(e);
+        }
+    }, [currIndex])
+
     useEffect(() => {
 
         return () => {
@@ -81,8 +97,10 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
 
     const handler = {
         onLoad: () => {
-            // console.log("TEST BOX onLoad", currIndex, id, id + currIndex)
-            // setActiveContainer(id + currIndex)
+            console.log("TEST BOX onLoad", id + ('0'))
+            setTimeout(() => {
+                setActiveContainer(id + ('0'))
+            }, 0);
         },
         onUnload: () => { }
     }
@@ -92,6 +110,7 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
 
 
     return (
+        //keysRemapping={components.length > 1 ? type === "horizontal" ? keysRemappingH : keysRemappingV : notify()}
         <ContainerComp id={id} keysRemapping={keysRemapping} handler={handler} >
             <div className={className} >
                 {currIndex}
