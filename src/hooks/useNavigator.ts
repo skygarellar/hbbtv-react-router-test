@@ -7,14 +7,14 @@ import type {
   NavigatorHook,
 } from "../types";
 import { getKey, logger } from "../utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const navigatorStore = create<NavigatorStore>((set, get) => ({
-
   keyPress: null,
   containers: new Map<ContainerId, Container>(),
 
   activeContainer: null,
+  activeId: null,
   activePage: null,
 
   containersStack: new Map<ContainerId, Container>(),
@@ -46,27 +46,27 @@ export const navigatorStore = create<NavigatorStore>((set, get) => ({
     const currActiveContainer = get().activeContainer;
     const newActiveContainer = get().containers.get(cId)!;
 
-    if (!newActiveContainer) return
+    if (!newActiveContainer) return;
 
     newActiveContainer.parentId = parentId;
-    const activePage = get().activePage
+    const activePage = get().activePage;
 
     if (currActiveContainer) {
-      console.log("PROVA: ", currActiveContainer, newActiveContainer)
+      console.log("PROVA: ", currActiveContainer, newActiveContainer);
 
-      if (currActiveContainer.parentId === newActiveContainer!.parentId && activePage !== parentId) {
+      if (
+        currActiveContainer.parentId === newActiveContainer!.parentId &&
+        activePage !== parentId
+      ) {
         //Subling containers => replace
         get().containerStackPop();
         get().containerStackPush(newActiveContainer!);
-      }
-      else {
+      } else {
         // father
         if (currActiveContainer.id === newActiveContainer!.parentId) {
           // curr active container is my parent
           get().containerStackPush(newActiveContainer!);
-        }
-        else {
-
+        } else {
           // da rivedere
           const parentId = newActiveContainer!.parentId!;
           const stackContainerIds = Array.from(stack.keys());
@@ -76,7 +76,10 @@ export const navigatorStore = create<NavigatorStore>((set, get) => ({
           // [a, b]
           // [a, b, f]
 
-          const newStackContainerIds = stackContainerIds.slice(0, stackContainerIds.indexOf(parentId) + 1);
+          const newStackContainerIds = stackContainerIds.slice(
+            0,
+            stackContainerIds.indexOf(parentId) + 1
+          );
           const containers = get().containers;
           const newStack = newStackContainerIds.reduce((acc, id) => {
             acc.set(id, containers.get(id));
@@ -86,16 +89,18 @@ export const navigatorStore = create<NavigatorStore>((set, get) => ({
           get().containerStackPush(newActiveContainer);
         }
       }
-    }
-    else {
+    } else {
       // che famo?
       get().containerStackPush(newActiveContainer);
     }
 
     console.log("xxx setActiveContainer", cId, parentId, newActiveContainer);
-    set({ activeContainer: newActiveContainer })
+    set({ activeContainer: newActiveContainer });
     console.log("xxx activeContainer", get().activeContainer);
+  },
 
+  setActiveId: (id: string | null) => {
+    set({ activeId: id });
   },
 
   registerContainer: (container: Container) => {
@@ -131,9 +136,8 @@ export const navigatorStore = create<NavigatorStore>((set, get) => ({
   },
 
   notify: (e: KeyboardEvent) => {
-
     // get().containerStackPop()
-    console.log("TEST NOTIFY :::::::::", get().activeContainer)
+    console.log("TEST NOTIFY :::::::::", get().activeContainer);
     const stack = get().containersStack;
     const keyPress = get().keyPress!;
 
@@ -146,12 +150,12 @@ export const navigatorStore = create<NavigatorStore>((set, get) => ({
      * - se lo trovo, chiamo il remapping
      * - se non lo trovo, non faccio nulla
      */
-    // 
+    //
     const ids = Array.from(stack.keys()).reverse().slice(1);
     const id = ids.find((id) => {
       return stack.get(id)?.keysRemapping?.[keyPress];
     });
-    console.log("TEST ID ::::::: ", id)
+    console.log("TEST ID ::::::: ", id);
     if (id) {
       stack.get(id)?.keysRemapping?.[keyPress]?.(e);
     }
@@ -160,28 +164,42 @@ export const navigatorStore = create<NavigatorStore>((set, get) => ({
 
   setActivePage: (name: string) => {
     logger.debug(`Setting active page: ${name}`);
-    set({ activePage: name, containersStack: new Map<ContainerId, Container>() });
+    set({
+      activePage: name,
+      containersStack: new Map<ContainerId, Container>(),
+    });
   },
-
 }));
 
-
-
-
 const useNavigator = (containerId: ContainerId): NavigatorHook => {
-  const [state] = useState<NavigatorHook>({
+  // const [state, setState] = useState<NavigatorHook>({
+  //   getActiveContainer: navigatorStore.getState().getActiveContainer,
+  //   keydownHandler: navigatorStore.getState().keydownHandler,
+  //   setActivePage: navigatorStore.getState().setActivePage,
+  //   setActiveContainer: (id: ContainerId) => {
+  //     navigatorStore
+  //       .getState()
+  //       .setActiveContainer(id, id === containerId ? null : containerId);
+  //   },
+  //   registerContainer: navigatorStore.getState().registerContainer,
+  //   unregisterContainer: navigatorStore.getState().unregisterContainer,
+  //   notify: navigatorStore.getState().notify,
+  // });
+
+  return {
+    setActiveId: navigatorStore.getState().setActiveId,
     getActiveContainer: navigatorStore.getState().getActiveContainer,
     keydownHandler: navigatorStore.getState().keydownHandler,
     setActivePage: navigatorStore.getState().setActivePage,
     setActiveContainer: (id: ContainerId) => {
-      navigatorStore.getState().setActiveContainer(id, id === containerId ? null : containerId);
+      navigatorStore
+        .getState()
+        .setActiveContainer(id, id === containerId ? null : containerId);
     },
     registerContainer: navigatorStore.getState().registerContainer,
     unregisterContainer: navigatorStore.getState().unregisterContainer,
     notify: navigatorStore.getState().notify,
-  });
-
-  return state;
+  };
 };
 
 export default useNavigator;

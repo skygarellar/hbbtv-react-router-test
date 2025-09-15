@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import useNavigator from "../hooks/useNavigator";
+import useNavigator, { navigatorStore } from "../hooks/useNavigator";
 import { Keys } from "../types";
 import { logger } from "../utils";
 import ContainerComp from "./Container";
+import Card from "./Card";
 
 type ListProps = {
   items: unknown[];
@@ -11,34 +12,41 @@ type ListProps = {
   type?: string;
 };
 
-const Card: React.FC<{ item: { id: string }; selected: boolean }> = ({
-  item,
-  selected,
-}) => {
-  return <div className={`card ${selected ? "selected" : ""}`}>{item.id}</div>;
-};
-
 const List: React.FC<ListProps> = ({
   items,
   id,
   className = "list",
   type = "horizontal",
 }) => {
-  const { notify } = useNavigator(id);
+  const { setActiveId, notify } = useNavigator(id);
 
   const [currIndex, setCurrIndex] = useState(0);
 
   const keysRemappingH = {
     [Keys.Right]: (e: KeyboardEvent) => {
-      logger.debug("TEST : LIST : Right key pressed on list", e);
+      logger.debug(
+        "TEST : LIST : Right key pressed on list",
+        e,
+        currIndex,
+        navigatorStore.getState().activeId
+      );
       // notify(e);
-      if (currIndex < items.length - 1) setCurrIndex((prev) => prev + 1);
-      else notify(e);
+      if (currIndex < items.length - 1) {
+        setActiveId(items[currIndex + 1]?.id as string);
+        setCurrIndex((prev) => prev + 1);
+      } else notify(e);
     },
     [Keys.Left]: (e: KeyboardEvent) => {
+      logger.debug(
+        "TEST : LIST : Left key pressed on list",
+        e,
+        currIndex,
+        navigatorStore.getState().activeId
+      );
       if (currIndex === 0) {
         notify(e);
       } else {
+        setActiveId(items[currIndex - 1]?.id as string);
         setCurrIndex((prev) => prev - 1);
       }
     },
@@ -48,13 +56,16 @@ const List: React.FC<ListProps> = ({
     [Keys.Down]: (e: KeyboardEvent) => {
       logger.debug("TEST : LIST : DOWN key pressed on list", e);
       // notify(e);
-      if (currIndex < items.length - 1) setCurrIndex((prev) => prev + 1);
-      else notify(e);
+      if (currIndex < items.length - 1) {
+        setActiveId(items[currIndex + 1]?.id as string);
+        setCurrIndex((prev) => prev + 1);
+      } else notify(e);
     },
     [Keys.Up]: (e: KeyboardEvent) => {
       if (currIndex === 0) {
         notify(e);
       } else {
+        setActiveId(items[currIndex - 1]?.id as string);
         setCurrIndex((prev) => prev - 1);
       }
     },
@@ -116,7 +127,7 @@ const List: React.FC<ListProps> = ({
         }
       >
         {items.map((item, idx) => (
-          <Card item={{ id }} selected={idx === currIndex} />
+          <Card item={item as { id: string }} />
         ))}
       </div>
     </ContainerComp>

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useNavigator from "../hooks/useNavigator";
+import useNavigator, { navigatorStore } from "../hooks/useNavigator";
 import type { Container, ContainerProps } from "../types";
 import { logger } from "../utils";
 
@@ -12,9 +12,7 @@ const ContainerComp: React.FC<ContainerProps> = ({
   const { getActiveContainer, registerContainer, unregisterContainer } =
     useNavigator(id);
 
-  const activeContainer = getActiveContainer();
-
-  console.log("xxx active container in ContainerComp:", activeContainer?.id);
+  const activeContainer = navigatorStore((state) => state.activeContainer);
 
   useEffect(() => {
     const container: Container = { id, keysRemapping, handler };
@@ -26,8 +24,6 @@ const ContainerComp: React.FC<ContainerProps> = ({
       unregisterContainer(container);
     };
   }, [keysRemapping, handler, id, registerContainer, unregisterContainer]);
-  console.log("xxx active container id", id);
-  console.log("xxx active container ", activeContainer);
 
   return (
     <div

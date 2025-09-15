@@ -89,6 +89,7 @@ const Example = () => {
   ];
 
   useEffect(() => {
+    // console.log("Example mounted, setting active container to 'boxtop'");
     setActiveContainer("boxtop");
   }, [setActiveContainer]);
 

@@ -81,7 +81,7 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
     const actionLeft = useCallback((e?: KeyboardEvent) => {
         console.log("TEST BOX CURRINDEX ON LEFT: ", currIndexRef.current, currIndex, id + (currIndexRef.current + 1), components.length - 1)
         if (currIndexRef.current < components.length - 1) {
-            setCurrIndex(prev => prev + 1);
+            setCurrIndex(prev => prev - 1);
             setActiveContainer("boxtop0")
         }
         else {
