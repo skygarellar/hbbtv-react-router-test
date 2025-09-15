@@ -1,21 +1,13 @@
 import React, { useEffect } from "react";
-import useNavigatorManager from "../components/test/NavigatorManager";
-import SelectableItem from "../components/test/SelectableItem";
 
 const sideMenuArray = new Array<any>(11).fill(1);
 const dashboardArray = new Array<any>(10).fill(5);
 const footerArray = new Array<any>(4).fill(9);
 
 const NewPage = () => {
-  const { selectedId, setWrappers, setSelectedId } = useNavigatorManager();
+  useEffect(() => {}, []);
 
-  useEffect(() => {
-    setSelectedId("homepage");
-  }, []);
-
-  useEffect(() => {
-    
-  }, [selectedId]);
+  useEffect(() => {}, []);
   return (
     <div
       style={{
@@ -74,11 +66,7 @@ const NewPage = () => {
           }}
         >
           {dashboardArray.map((dashElement, index) => (
-            <SelectableItem
-              key={index + dashElement}
-              id={`dash-${index}`}
-              value={dashElement}
-            />
+            <div></div>
           ))}
         </div>
         <div

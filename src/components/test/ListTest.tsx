@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import useNavigator from "../hooks/useNavigator";
-import { Keys } from "../types";
-import { logger } from "../utils";
-import ContainerComp from "./Container";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import useNavigator, { navigatorStore } from "../../hooks/useNavigator";
+import { Keys } from "../../types";
+import { logger } from "../../utils";
+import ContainerComp from "../Container";
+import SelectableItem from "../SelectableItem";
 
 type ListProps = {
   items: unknown[];
@@ -15,10 +16,12 @@ const Card: React.FC<{ item: { id: string }; selected: boolean }> = ({
   item,
   selected,
 }) => {
-  return <div className={`card ${selected ? "selected" : ""}`}>{item.id}</div>;
+  let classes = "card";
+  if (selected) classes += " selected";
+  return <div className={classes}>{item.id}</div>;
 };
 
-const List: React.FC<ListProps> = ({
+const ListTest: React.FC<ListProps> = ({
   items,
   id,
   className = "list",
@@ -28,20 +31,25 @@ const List: React.FC<ListProps> = ({
 
   const [currIndex, setCurrIndex] = useState(0);
 
+  const handleRight = (e: KeyboardEvent) => {
+    logger.debug("TEST : LIST : Right key pressed on list", currIndex);
+
+    if (currIndex < items.length - 1) setCurrIndex((prev) => prev + 1);
+    else notify(e);
+  };
+
+  const handleLeft = (e: KeyboardEvent) => {
+    logger.debug("TEST : LIST : Left key pressed on list", currIndex);
+    if (currIndex === 0) {
+      notify(e);
+    } else {
+      setCurrIndex((prev) => prev - 1);
+    }
+  };
+
   const keysRemappingH = {
-    [Keys.Right]: (e: KeyboardEvent) => {
-      logger.debug("TEST : LIST : Right key pressed on list", e);
-      // notify(e);
-      if (currIndex < items.length - 1) setCurrIndex((prev) => prev + 1);
-      else notify(e);
-    },
-    [Keys.Left]: (e: KeyboardEvent) => {
-      if (currIndex === 0) {
-        notify(e);
-      } else {
-        setCurrIndex((prev) => prev - 1);
-      }
-    },
+    [Keys.Right]: (e: KeyboardEvent) => handleRight(e),
+    [Keys.Left]: (e: KeyboardEvent) => handleLeft(e),
   };
 
   const keysRemappingV = {
@@ -91,12 +99,10 @@ const List: React.FC<ListProps> = ({
     alignItems: "center",
   };
 
+  const mapping = type === "horizontal" ? keysRemappingH : keysRemappingV;
+
   return (
-    <ContainerComp
-      id={id}
-      keysRemapping={type === "horizontal" ? keysRemappingH : keysRemappingV}
-      handler={handler}
-    >
+    <ContainerComp id={id} keysRemapping={mapping} handler={handler}>
       <div
         className={className}
         style={
@@ -115,12 +121,12 @@ const List: React.FC<ListProps> = ({
               }
         }
       >
-        {items.map((item, idx) => (
-          <Card item={{ id }} selected={idx === currIndex} />
+        {items.map((item: any, idx) => (
+          <Card item={item} selected={idx === currIndex} />
         ))}
       </div>
     </ContainerComp>
   );
 };
 
-export default List;
+export default ListTest;
