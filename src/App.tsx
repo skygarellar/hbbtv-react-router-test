@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import About from "./pages/about";
 import Layout from "./components/Layout";
 import Example from "./pages/example";
+import NewPage from "./pages/newPage";
 
 function App() {
   const { keydownHandler } = useNavigator("app");
@@ -18,13 +19,14 @@ function App() {
   }, [keydownHandler]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="example" element={<Example />} />
-      </Route>
-    </Routes>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="example" element={<Example />} />
+          <Route path="new" element={<NewPage />} />
+        </Route>
+      </Routes>
   );
 }
 

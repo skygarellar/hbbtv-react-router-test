@@ -15,7 +15,9 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
     const { notify, setActiveContainer } = useNavigator(id);
 
     const [currIndex, setCurrIndex] = useState(0);
-    const currIndexRef = useRef(0)
+    const currIndexRef = useRef(0);
+
+    console.log("TEST BOX ID :", id, "COMPONENTS :", components);
 
 
     useEffect(() => {
@@ -61,7 +63,7 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
             setActiveContainer(id + (currIndexRef.current + 1))
         }
         else {
-            notify(e);
+            notify(e!);
         }
     }, [currIndex])
 
@@ -72,7 +74,7 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
             setActiveContainer("boxtop1")
         }
         else {
-            notify(e);
+            notify(e!);
         }
     }, [currIndex])
 
@@ -83,7 +85,7 @@ const Box: React.FC<BoxProps> = ({ components, id, className }) => {
             setActiveContainer("boxtop0")
         }
         else {
-            notify(e);
+            notify(e!);
         }
     }, [currIndex])
 

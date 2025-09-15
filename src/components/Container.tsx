@@ -9,7 +9,8 @@ const ContainerComp: React.FC<ContainerProps> = ({
   handler,
   children,
 }) => {
-  const { getActiveContainer, registerContainer, unregisterContainer } = useNavigator(id);
+  const { getActiveContainer, registerContainer, unregisterContainer } =
+    useNavigator(id);
 
   const activeContainer = getActiveContainer();
 
@@ -24,14 +25,23 @@ const ContainerComp: React.FC<ContainerProps> = ({
       logger.debug(`Container unregistered: ${id}`);
       unregisterContainer(container);
     };
-
-    
   }, [keysRemapping, handler, id, registerContainer, unregisterContainer]);
-  console.log("xxx active container in", id);
+  console.log("xxx active container id", id);
+  console.log("xxx active container ", activeContainer);
 
-  return <div style={activeContainer?.id === id ?{
-    border: "2px solid #ccc",
-  } : {border: "none"}}>{children}</div>;
+  return (
+    <div
+      style={
+        activeContainer?.id === id
+          ? {
+              border: "2px solid #ccc",
+            }
+          : { border: "none" }
+      }
+    >
+      {children}
+    </div>
+  );
 };
 
 export default ContainerComp;

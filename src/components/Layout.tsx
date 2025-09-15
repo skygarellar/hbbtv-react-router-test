@@ -5,8 +5,9 @@ export default function Layout() {
     <div>
       <nav>
         <Link to="/">Home</Link> |
-        <Link to="about">About</Link>
-        <Link to="example">Example</Link>
+        <Link to="about">About</Link> |
+        <Link to="example">Example</Link> |
+        <Link to="new">New Page</Link>
       </nav>
       <main>
         <Outlet /> {/* Qui verranno renderizzate le sottoroute */}

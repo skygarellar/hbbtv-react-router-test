@@ -61,6 +61,54 @@ export type NavigatorStore = {
   notify: (e: KeyboardEvent) => void;
 };
 
-export type NavigatorHook = Pick<NavigatorStore, "keydownHandler" | "setActivePage" | "registerContainer" | "unregisterContainer" | "notify" | "getActiveContainer"> & {
+export type NavigatorHook = Pick<
+  NavigatorStore,
+  | "keydownHandler"
+  | "setActivePage"
+  | "registerContainer"
+  | "unregisterContainer"
+  | "notify"
+  | "getActiveContainer"
+> & {
   setActiveContainer: (id: ContainerId) => void;
 };
+
+// test
+export type NavigationProvider = {
+  selectedId: string | null;
+  previousId: string | null;
+  wrappers: Wrapper[];
+  setImperativeSelection: (id: string | null) => void;
+  setWrappers: (wrappers: Wrapper[]) => void;
+  setSelectedId: (id: string | null) => void;
+  keyListener: (e: KeyboardEvent) => void;
+};
+
+export type Wrapper = {
+  id: string;
+  elements: ElementObj[];
+  selectedElement: ElementObj | Wrapper | null;
+  popItem: () => void;
+  pushItem: (el: ElementObj) => void;
+  clear: () => void;
+  load: () => void;
+};
+
+export type ElementObj = {
+  id: string;
+  items: Item[];
+  selectedItem: Item | null;
+  keyMapping: MappingObject;
+  popItem: () => void;
+  pushItem: (it: Item) => void;
+  clear: () => void;
+  notify: (e: KeyboardEvent) => void;
+};
+
+export type Item = {
+  id: string;
+  prev: Item | null;
+  next: Item | null;
+};
+
+export type MappingObject = Partial<Record<Keys, KeyRemappingCallback>>;
