@@ -9,7 +9,11 @@ import Example from "./pages/example";
 import NewPage from "./pages/newPage";
 
 function App() {
-  const { keydownHandler } = useNavigator("app");
+  const { keydownHandler, setActiveContainer } = useNavigator();
+
+  // useEffect(() => {
+  //   setActiveContainer("app", null);
+  // }, []);
 
   useEffect(() => {
     window.addEventListener("keydown", keydownHandler);
@@ -19,14 +23,14 @@ function App() {
   }, [keydownHandler]);
 
   return (
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="example" element={<Example />} />
-          <Route path="new" element={<NewPage />} />
-        </Route>
-      </Routes>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="example" element={<Example />} />
+        <Route path="new" element={<NewPage />} />
+      </Route>
+    </Routes>
   );
 }
 

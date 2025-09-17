@@ -33,6 +33,8 @@ export type Container = {
   keysRemapping: KeysRemapping;
   handler?: ContainerHandler;
   parentId?: ContainerId | null; // Optional parent ID for nested containers
+  forceActive?: boolean; // If true, this container is always active
+  style?: React.CSSProperties;
 };
 
 export type ContainerProps = Container & {
@@ -73,9 +75,8 @@ export type NavigatorHook = Pick<
   | "notify"
   | "getActiveContainer"
   | "setActiveId"
-> & {
-  setActiveContainer: (id: ContainerId) => void;
-};
+  | "setActiveContainer"
+>;
 
 // test
 export type NavigationProvider = {

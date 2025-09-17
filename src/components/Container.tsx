@@ -8,9 +8,9 @@ const ContainerComp: React.FC<ContainerProps> = ({
   keysRemapping,
   handler,
   children,
+  style,
 }) => {
-  const { getActiveContainer, registerContainer, unregisterContainer } =
-    useNavigator(id);
+  const { registerContainer, unregisterContainer } = useNavigator();
 
   const activeContainer = navigatorStore((state) => state.activeContainer);
 
@@ -27,13 +27,10 @@ const ContainerComp: React.FC<ContainerProps> = ({
 
   return (
     <div
-      style={
-        activeContainer?.id === id
-          ? {
-              border: "2px solid #ccc",
-            }
-          : { border: "none" }
-      }
+      style={{
+        ...style,
+        border: activeContainer?.id === id ? "2px solid #ccc" : "none",
+      }}
     >
       {children}
     </div>

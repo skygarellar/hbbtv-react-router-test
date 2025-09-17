@@ -18,7 +18,7 @@ const List: React.FC<ListProps> = ({
   className = "list",
   type = "horizontal",
 }) => {
-  const { setActiveId, notify } = useNavigator(id);
+  const { setActiveId, notify } = useNavigator();
 
   const [currIndex, setCurrIndex] = useState(0);
 
